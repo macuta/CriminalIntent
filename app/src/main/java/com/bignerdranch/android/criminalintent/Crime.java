@@ -26,7 +26,7 @@ public class Crime {
         this.mTitle = mTitle;
     }
 
-    public Date getmDate() {
+    public Date getDate() {
         return mDate;
     }
 
