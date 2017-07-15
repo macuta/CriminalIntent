@@ -46,7 +46,7 @@ public class CrimeFragment extends Fragment
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mCrime.setmTitle(s.toString());
+                mCrime.setTitle(s.toString());
             }
 
             @Override
@@ -64,7 +64,7 @@ public class CrimeFragment extends Fragment
         mSolvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCrime.setmSolved(isChecked);
+                mCrime.setSolved(isChecked);
             }
         });
 

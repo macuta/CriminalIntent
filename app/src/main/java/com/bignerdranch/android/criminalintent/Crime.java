@@ -14,7 +14,7 @@ public class Crime {
         mDate = new Date();
     }
 
-    public UUID getmId() {
+    public UUID getId() {
         return mId;
     }
 
@@ -22,7 +22,7 @@ public class Crime {
         return mTitle;
     }
 
-    public void setmTitle(String mTitle) {
+    public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 
@@ -38,7 +38,7 @@ public class Crime {
         return mSolved;
     }
 
-    public void setmSolved(boolean mSolved) {
+    public void setSolved(boolean mSolved) {
         this.mSolved = mSolved;
     }
 }
