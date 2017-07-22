@@ -8,6 +8,7 @@ public class Crime {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+    private boolean mPoliceContact;
 
     public Crime() {
         mId = UUID.randomUUID();
@@ -18,7 +19,7 @@ public class Crime {
         return mId;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
@@ -30,16 +31,24 @@ public class Crime {
         return mDate;
     }
 
-    public void setmDate(Date mDate) {
+    public void setDate(Date mDate) {
         this.mDate = mDate;
     }
 
-    public boolean ismSolved() {
+    public boolean isSolved() {
         return mSolved;
+    }
+
+    public boolean isPoliceContactNeeded() {
+        return mPoliceContact;
     }
 
     public void setSolved(boolean mSolved) {
         this.mSolved = mSolved;
     }
+    public void setPoliceContact(boolean mPoliceContact) {
+        this.mPoliceContact = mPoliceContact;
+    }
+
 }
 

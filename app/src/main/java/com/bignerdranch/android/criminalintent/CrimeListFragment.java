@@ -7,6 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,38 +41,106 @@ public class CrimeListFragment extends Fragment
         mCrimeRecyclerView.setAdapter(mAdapter);
     }
 
-    private class CrimeHolder extends RecyclerView.ViewHolder
+    private class CrimeHolder extends CrimeHolderBind
     {
-        public CrimeHolder(LayoutInflater inflater, ViewGroup parent)
+        private CrimeHolder(LayoutInflater inflater, ViewGroup parent)
         {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
+            itemView.setOnClickListener(this);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
+            mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
         }
     }
 
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>
+    private class CrimeHolderPolice extends CrimeHolderBind implements View.OnClickListener
+    {
+        private Button mPoliceButton;
+
+        private CrimeHolderPolice(LayoutInflater inflater, ViewGroup parent)
+        {
+            super(inflater.inflate(R.layout.list_item_crime_police, parent, false));
+            itemView.setOnClickListener(this);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
+            mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+            mPoliceButton = (Button) itemView.findViewById(R.id.button_police);
+
+            mPoliceButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(
+                            getActivity(),
+                            "dial...",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+            });
+        }
+    }
+
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolderBind>
     {
         private List<Crime> mCrimes;
 
-        public CrimeAdapter(List<Crime> crimes) {
+        private CrimeAdapter(List<Crime> crimes) {
             mCrimes = crimes;
         }
 
         @Override
-        public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CrimeHolderBind onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+            if (viewType == 1) {
+                return new CrimeHolderPolice(layoutInflater, parent);
+            }
 
             return new CrimeHolder(layoutInflater, parent);
         }
 
         @Override
-        public void onBindViewHolder(CrimeHolder holder, int position) {
-
+        public void onBindViewHolder(CrimeHolderBind holder, int position) {
+            Crime crime = mCrimes.get(position);
+            holder.bind(crime);
         }
 
         @Override
         public int getItemCount() {
             return mCrimes.size();
         }
+
+        public int getItemViewType(int position)
+        {
+            if (mCrimes.get(position).isPoliceContactNeeded()) {
+                return 1;
+            }
+
+            return 0;
+        }
+    }
+
+    protected class CrimeHolderBind extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
+        protected TextView mTitleTextView;
+        protected TextView mDateTextView;
+        protected Crime mCrime;
+
+        private CrimeHolderBind(View itemView) {
+            super(itemView);
+        }
+
+        public void bind(Crime crime)
+        {
+            mCrime = crime;
+            mTitleTextView.setText(mCrime.getTitle());
+            mDateTextView.setText(mCrime.getDate().toString());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(
+                    getActivity(),
+                    mCrime.getTitle() + " clicked!",
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
     }
 }
-
