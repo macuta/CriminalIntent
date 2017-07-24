@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class CrimeListFragment extends Fragment
             itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+            mSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
         }
     }
 
@@ -122,6 +124,7 @@ public class CrimeListFragment extends Fragment
         protected TextView mTitleTextView;
         protected TextView mDateTextView;
         protected Crime mCrime;
+        protected ImageView mSolvedImageView;
 
         private CrimeHolderBind(View itemView) {
             super(itemView);
@@ -132,6 +135,9 @@ public class CrimeListFragment extends Fragment
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
+            if (mSolvedImageView instanceof ImageView) {
+                mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
+            }
         }
 
         @Override
