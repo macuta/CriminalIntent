@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.text.format.DateFormat;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment
@@ -134,7 +136,8 @@ public class CrimeListFragment extends Fragment
         {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
-            mDateTextView.setText(mCrime.getDate().toString());
+            CharSequence stringDate = DateFormat.format("EEEE, MMM, dd, yyyy", mCrime.getDate());
+            mDateTextView.setText(stringDate);
             if (mSolvedImageView instanceof ImageView) {
                 mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
             }
@@ -142,11 +145,8 @@ public class CrimeListFragment extends Fragment
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(
-                    getActivity(),
-                    mCrime.getTitle() + " clicked!",
-                    Toast.LENGTH_SHORT
-            ).show();
+            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            startActivity(intent);
         }
     }
 }
