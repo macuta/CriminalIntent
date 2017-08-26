@@ -20,6 +20,14 @@ public class CrimeListFragment extends Fragment
 {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int savedPosition;
+    private static final String SAVED_POSITION = "SAVED_POSITION";
+
+    @Override
+    public void onSaveInstanceState(Bundle onSavedInstanceState) {
+        super.onSaveInstanceState(onSavedInstanceState);
+        onSavedInstanceState.putSerializable(SAVED_POSITION, savedPosition);
+    }
 
     @Override
     public View onCreateView(
@@ -31,17 +39,32 @@ public class CrimeListFragment extends Fragment
         mCrimeRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        if (savedInstanceState != null) {
+            savedPosition = getArguments().getInt(SAVED_POSITION);
+        }
+
         updateUI();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
     }
 
     private void updateUI()
     {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyItemChanged(savedPosition);
+        }
     }
 
     private class CrimeHolder extends CrimeHolderBind
@@ -146,6 +169,7 @@ public class CrimeListFragment extends Fragment
         @Override
         public void onClick(View v) {
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            savedPosition = getAdapterPosition();
             startActivity(intent);
         }
     }
