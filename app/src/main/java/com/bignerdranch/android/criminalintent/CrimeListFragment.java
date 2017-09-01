@@ -161,14 +161,14 @@ public class CrimeListFragment extends Fragment
             mTitleTextView.setText(mCrime.getTitle());
             CharSequence stringDate = DateFormat.format("EEEE, MMM, dd, yyyy", mCrime.getDate());
             mDateTextView.setText(stringDate);
-            if (mSolvedImageView instanceof ImageView) {
+            if (mSolvedImageView != null) {
                 mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
             }
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             savedPosition = getAdapterPosition();
             startActivity(intent);
         }
