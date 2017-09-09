@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +21,8 @@ public class CrimePagerActivity extends AppCompatActivity
     private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
+    private Button mFirstButton;
+    private Button mLastButton;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
@@ -34,7 +39,38 @@ public class CrimePagerActivity extends AppCompatActivity
 
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
+        mFirstButton = (Button) findViewById(R.id.button_first);
+        mLastButton = (Button) findViewById(R.id.button_last);
+
         mViewPager = (ViewPager) findViewById(R.id.crime_view_pager);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
+
+                if (position == mCrimes.size()-1) {
+                    mLastButton.setEnabled(false);
+                } else {
+                    mLastButton.setEnabled(true);
+                }
+
+                if (position == 0) {
+                    mFirstButton.setEnabled(false);
+                } else {
+                    mFirstButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mCrimes = CrimeLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
@@ -56,5 +92,19 @@ public class CrimePagerActivity extends AppCompatActivity
                 break;
             }
         }
+
+        mFirstButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              mViewPager.setCurrentItem(0);
+            }
+        });
+
+        mLastButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mCrimes.size()-1);
+            }
+        });
     }
 }
