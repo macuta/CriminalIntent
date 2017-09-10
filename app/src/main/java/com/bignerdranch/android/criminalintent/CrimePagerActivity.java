@@ -11,8 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -51,8 +49,6 @@ public class CrimePagerActivity extends AppCompatActivity
 
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
-
                 if (position == mCrimes.size()-1) {
                     mLastButton.setEnabled(false);
                 } else {
